@@ -15,7 +15,6 @@ module.exports.replaceBBCode = async (req, res, next) => {
             const regex = new RegExp(tag, 'g');
             validText = validText.replace(regex, tagReplacements[tag]);
         }
-        console.log(validText)
         req.body.validText = validText
         next()
     } catch (err) {
