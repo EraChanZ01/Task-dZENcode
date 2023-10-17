@@ -1,0 +1,29 @@
+{
+  "development": {
+    "username": "postgres",
+    "password": "password",
+    "database": "database_development",
+    "host": "localhost",
+    "dialect": "postgres",
+    "operatorsAliases": "Op",
+    "seederStorage": "sequelize"
+  },
+  "test": {
+    "username": "postgres",
+    "password": "admin",
+    "database": "database_test",
+    "host": "localhost",
+    "dialect": "postgres",
+    "operatorsAliases": "Op",
+    "seederStorage": "sequelize"
+  },
+  "production": {
+    "username": "postgres",
+    "password": "admin",
+    "database": "database_production",
+    "host": "localhost",
+    "dialect": "postgres",
+    "operatorsAliases": "Op",
+    "seederStorage": "sequelize"
+  }
+}
