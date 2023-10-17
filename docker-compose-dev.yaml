@@ -1,0 +1,28 @@
+version: '3'
+services:
+
+  server-dev:
+    build:
+      context: ./server
+
+    environment:
+      NODE_ENV: development
+    ports:
+      - "3000:3000"
+    depends_on:
+      - db-dev
+    volumes:
+      - ./server:/server
+      - /server/node_modules
+
+  db-dev:
+    image: postgres:13.2-alpine
+    environment:
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_USER=postgres
+      - POSTGRES_DB=database_development
+    ports:
+      - "5432:5432"
+
+volumes:
+  server-dev:
