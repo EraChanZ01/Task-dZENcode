@@ -14,11 +14,11 @@
 
 <h3>Clone repositorie</h3>
 <div class="highlight highlight-source-shell notranslate position-relative overflow-auto" dir="auto">
-  <pre>https://github.com/EraChanZ01/Task-dZENcode.git</pre>
+  <pre>  git clone https://github.com/EraChanZ01/Task-dZENcode.git</pre>
 </div>
 <p>OR</p>
 <div class="highlight highlight-source-shell notranslate position-relative overflow-auto" dir="auto">
-  <pre>git@github.com:EraChanZ01/Task-dZENcode.git</pre>
+  <pre> git clone git@github.com:EraChanZ01/Task-dZENcode.git</pre>
 </div>
 
 <h3>Build Docker containers</h3>
