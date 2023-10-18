@@ -3,11 +3,11 @@ const path = require('path');
 const multer = require('multer');
 const env = process.env.NODE_ENV || 'development';
 
-const devFilePath = path.resolve(__dirname, '..', '..', 'public/FileMessages');
+const devFilePath = path.resolve(__dirname, '..', '..', 'public/fileMessages');
 
 
 const filePath = env === 'production'
-    ? '/var/www/html/FileMessages/'
+    ? '/var/www/html/fileMessages/'
     : devFilePath;
 
 if (!fs.existsSync(filePath)) {
@@ -37,16 +37,21 @@ const imageFilter = (req, file, cb) => {
 const uploadFile = multer({ storage: storageFiles, fileFilter: imageFilter })
 
 module.exports.uploadFiles = async (req, res, next) => {
-    uploadFile.fields([
-        { name: 'image', maxCount: 1 },
-        { name: 'textFile', maxCount: 1 }
-    ])(req, res, (err) => {
-        if (err) {
-            return next(new Error('Invalid file'))
-        }
-        if (req.files['textFile'][0].size > 100 * 1024) {
-            return next(new Error('file size exceeds the limit'))
-        }
-        next()
-    })
+    try {
+        uploadFile.fields([
+            { name: 'image', maxCount: 1 },
+            { name: 'textFile', maxCount: 1 }
+        ])(req, res, (err) => {
+            if (err) {
+                return next(new Error('Invalid file'))
+            }
+            if (req.files['textFile'][0].size > 100 * 1024) {
+                return next(new Error('file size exceeds the limit'))
+            }
+            next()
+        })
+    } catch (e) {
+        return next(new Error('Invalid file'))
+    }
+
 }

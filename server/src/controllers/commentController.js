@@ -1,4 +1,5 @@
 const db = require('../models')
+const controller = require('../socketInit')
 
 module.exports.createComment = async (req, res) => {
     try {
@@ -9,10 +10,11 @@ module.exports.createComment = async (req, res) => {
             email,
             text: validText,
             parentCommentId,
-            imageName: image[0].filename,
-            fileTextName: textFile[0].filename
+            imageName: image ? image[0].filename : null,
+            fileTextName: textFile ? textFile[0].filename : null
         }
         const comment = await db.Comments.create(newData)
+        controller.getCommentController().emitNewComment(comment)
         res.status(201).send(comment)
     } catch (e) {
         res.status(500).send('Failed Fetch')

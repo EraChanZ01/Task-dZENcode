@@ -5,7 +5,7 @@ ARG NODE_ENV="development"
 RUN mkdir /server \
     && mkdir -p /public/fileMessages
 
-RUN mkdir -p /public/image
+RUN mkdir -p /var/www/html/fileMessages
 
 WORKDIR /server
 
