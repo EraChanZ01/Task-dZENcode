@@ -1,5 +1,12 @@
 const db = require('../models')
 const controller = require('../socketInit')
+const NodeCache = require("node-cache");
+
+const serverCache = new NodeCache({ useClones: false });
+
+function generateCacheKey(url, key) {
+    return `Cache_${url}_${key}`;
+}
 
 module.exports.createComment = async (req, res) => {
     try {
@@ -17,7 +24,7 @@ module.exports.createComment = async (req, res) => {
         controller.getCommentController().emitNewComment(comment)
         res.status(201).send(comment)
     } catch (e) {
-        res.status(500).send('Failed Fetch')
+        next(e)
     }
 
 }
@@ -41,7 +48,7 @@ module.exports.getComment = async (req, res) => {
         })
         res.status(200).send(comments)
     } catch (e) {
-        res.status(500).send('Failed Fetch')
+        next(e)
     }
 }
 module.exports.getReplies = async (req, res) => {
@@ -49,23 +56,31 @@ module.exports.getReplies = async (req, res) => {
         const { commentId } = req.params
         const { limit, offset } = req.query
 
-        const replies = await db.Comments.findAll({
-            where: {
-                parentCommentId: commentId
-            },
-            include: [
-                {
-                    model: db.Comments,
-                    as: 'replies',
-                    order: [['createdAt', 'DESC']]
-                }
-            ],
-            order: [['createdAt', 'DESC']],
-            limit: limit,
-            offset: offset
-        })
-        res.status(200).send(replies)
+        const cacheKey = generateCacheKey(req.baseUrl, commentId)
+        const cachedData = serverCache.get(cacheKey)
+
+        if (cachedData) {
+            res.status(200).send(cachedData)
+        } else {
+            const replies = await db.Comments.findAll({
+                where: {
+                    parentCommentId: commentId
+                },
+                include: [
+                    {
+                        model: db.Comments,
+                        as: 'replies',
+                        order: [['createdAt', 'DESC']]
+                    }
+                ],
+                order: [['createdAt', 'DESC']],
+                limit: limit,
+                offset: offset
+            })
+            serverCache.set(cacheKey, replies, 60);
+            res.status(200).send(replies)
+        }
     } catch (e) {
-        res.status(500).send('Failed Fetch')
+        next(e)
     }
 }

@@ -43,15 +43,15 @@ module.exports.uploadFiles = async (req, res, next) => {
             { name: 'textFile', maxCount: 1 }
         ])(req, res, (err) => {
             if (err) {
-                return next(new Error('Invalid file'))
+                throw new Error('Invalid file')
             }
             if (req.files['textFile'][0].size > 100 * 1024) {
-                return next(new Error('file size exceeds the limit'))
+                throw new Error('file size exceeds the limit')
             }
             next()
         })
     } catch (e) {
-        return next(new Error('Invalid file'))
+        return next(e)
     }
 
 }
