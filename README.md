@@ -3,6 +3,7 @@
 <h2>Server capabilities</h2>
 <ul>
   <li>REST API server architecture is built</li>
+  <li>There is a function to create a JWT and a function that checks the validity of the Token</li>
   <li>Can accept and process an image or text file using a multer</li>
   <li>Has flexible bbcode parser</li>
   <li>Function that checks closing tags</li>
