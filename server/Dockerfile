@@ -22,4 +22,4 @@ COPY . .
 
 EXPOSE 3000
 
-CMD cd src && sequelize db:migrate && sequelize db:seed:all && npm start
+CMD cd src && sequelize db:migrate && npm start
