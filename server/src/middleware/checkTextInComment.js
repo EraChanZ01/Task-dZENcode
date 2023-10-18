@@ -18,7 +18,7 @@ module.exports.replaceBBCode = async (req, res, next) => {
         req.body.validText = validText
         next()
     } catch (err) {
-        res.status(500).send('Failed Fetch')
+        next(e)
     }
 }
 
@@ -49,14 +49,14 @@ module.exports.checkSequence = async (req, res, next) => {
                 continue
             }
             if (stack.isEmpty && closeTag.includes(tagName)) {
-                throw new Error('syntax error')
+                throw new Error('syntax error', 400)
             }
             const correctCloseTag = options[stack[stack.length - 1]]
             if (correctCloseTag === tagName) {
                 stack.pop()
             }
             else {
-                throw new Error('syntax error')
+                throw new Error('syntax error', 400)
             }
         }
         req.body.textWithOutTags = textWithOutTags
@@ -64,11 +64,11 @@ module.exports.checkSequence = async (req, res, next) => {
         if (stack.length === 0) {
             next();
         } else {
-            throw new Error('syntax error')
+            throw new Error('syntax error', 400)
         }
 
     } catch (e) {
-        res.status(500).send('Failed Fetch')
+        next(e)
     }
 
 }

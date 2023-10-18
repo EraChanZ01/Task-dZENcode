@@ -12,8 +12,8 @@ services:
     depends_on:
       - db-dev
     volumes:
-      - ./server:/server
-      - /server/node_modules
+      - ./var/www/html/fileMessages:/var/www/html/fileMessages
+      - ./server:/server - /server/node_modules
 
   db-dev:
     image: postgres:13.2-alpine
